@@ -28,7 +28,7 @@ jobs:
           run: dotnet test TestingApp.Test --logger "trx;logfilename=TestingApp.Test/test_results.trx" --collect:"XPlat Code Coverage"
         
         - name: Check test results path
-          run : ls -la
+          run : cd TestingApp.Test && ls -la
         
         - name: Check test results
           run: |
