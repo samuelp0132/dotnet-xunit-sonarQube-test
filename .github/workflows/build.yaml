@@ -22,7 +22,7 @@ jobs:
           run: dotnet restore TestingApp/
         
         - name: Build
-          run: dotnet build --configuration Release
+          run: dotnet build TestingApp/ --configuration Release
 
         - name: Run tests
           run: dotnet test TestingApp.Test --configuration Release --logger "trx;LogFileName=test_results.trx" --collect:"XPlat Code Coverage"
