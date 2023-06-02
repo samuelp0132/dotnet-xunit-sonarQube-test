@@ -25,15 +25,15 @@ jobs:
           run: dotnet build TestingApp/ --configuration Release
 
         - name: Run tests
-          run: dotnet test TestingApp.Test --logger "trx;logfilename=TestingApp.Test/test_results.trx" --collect:"XPlat Code Coverage"
+          run: dotnet test TestingApp.Test --logger "trx;logfilename=test_results.trx" --collect:"XPlat Code Coverage"
         
         - name: Check test results path
           run : cd TestingApp.Test&& cd TestResults && ls -la
         
         - name: Check test results
           run: |
-            if [ -f TestingApp.Test/test_results.trx ]; then
-              test_failures=$(grep -oP 'result="Failed"' TestingApp.Test/test_results.trx | wc -l)
+            if [ -f TestingApp.Test/TestResults/test_results.trx ]; then
+              test_failures=$(grep -oP 'result="Failed"' TestingApp.Test/TestResults/test_results.trx | wc -l)
               if [ $test_failures -gt 0 ]; then
                 echo "Tests failed. Stopping deployment."
                 exit 1 
