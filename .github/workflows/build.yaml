@@ -19,13 +19,13 @@ jobs:
             dotnet-version: '6.0.x'
         
         - name: Restore dependencies
-          run: dotnet restore
+          run: dotnet restore TestingApp/
         
         - name: Build
           run: dotnet build --configuration Release
 
         - name: Run tests
-          run: dotnet test --configuration Release --logger "trx;LogFileName=test_results.trx" --collect:"XPlat Code Coverage"
+          run: dotnet test TestingApp.Test --configuration Release --logger "trx;LogFileName=test_results.trx" --collect:"XPlat Code Coverage"
         - name: Check test results
           run: |
             if [ -f test_results.trx ]; then
@@ -41,6 +41,7 @@ jobs:
             fi
     
   build:
+    needs: test
     name: Build and analyze
     runs-on: windows-latest
     steps:
@@ -78,5 +79,5 @@ jobs:
         shell: powershell
         run: |
           .\.sonar\scanner\dotnet-sonarscanner begin /k:"samuelp0132_dotnet-xunit-sonarQube-test" /o:"samuelp0132" /d:sonar.login="${{ secrets.SONAR_TOKEN }}" /d:sonar.host.url="https://sonarcloud.io"
-          dotnet build
+          dotnet build TestingApp/
           .\.sonar\scanner\dotnet-sonarscanner end /d:sonar.login="${{ secrets.SONAR_TOKEN }}"
